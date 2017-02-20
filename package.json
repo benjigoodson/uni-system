@@ -1,0 +1,23 @@
+{
+  "name": "multi-systemdashboardtool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "author": "Benjamin Goodson",
+  "license": "ISC",
+  "engine": {
+    "node": "*",
+    "npm": "*"
+  },
+  "dependencies": {
+    "body-parser": "^1.4.2",
+    "date-format": "^1.0.0",
+    "express": "^4.14.0",
+    "moment": "^2.16.0",
+    "mongoose": "^4.6.3",
+    "underscore": "^1.8.3"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
