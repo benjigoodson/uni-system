@@ -3,7 +3,7 @@
 // Local host settings
 var host = "127.0.0.1";
 var port = "27017";
-var database =  "shop-system";
+var database =  "uni-system";
 var username = "";
 var password = "";
 

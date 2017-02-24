@@ -1,154 +1,103 @@
 var conn = new Mongo();
-db = conn.getDB("shop-system");
-db = db.getSiblingDB("shop-system");
+db = conn.getDB("uni-system");
+db = db.getSiblingDB("uni-system");
 
 var outcome = true;
 
 ///////////// DEFAULT VALUES /////////////
 
-// Product names
-var productNames = ["Apple","Orange","TV","IPhone","Laptop","Desktop","Wine","Vodka","Pineapple","Yoghurt","Milk","Bread","Chicken Nuggets"];
+// Student names
+var studentNames = ["Colin", "Lauren", "Ben", "Amy", "Emily", "Chris", "Theo", "James", "Polly", "Henry", "Jack", "Josie", "Rachel", "Emma", "Harriet", "Abigail", "Jessica", "Jacob", 
+    "Daniel", "Jamie", "John", "David", "Kyle", "Tom", "Tina", "Kevin", "Anne", "Simon", "Paul", "Dan", "Martin", "Ryan", "Lucy", "Kacey", "Kate", "Vicky", "Mike", "Mario", "Joe"];
 
-// Shop locations
-var shopLocations = ["London","Manchester","Newcastle","Sunderland","Durham","Liverpool","Peterborough","Glasgow","Edinburgh"];
+// Genders
+var genders = ["MALE", "FEMALE"]
 
-// Transaction Types
-var transactionTypes = ["CASH", "DEBIT_CARD", "CREDIT_CARD","LATE_PAYMENT"];
+// Course names
+var courseNames = ["Nursing", "Computing", "Chemistry", "Biology", "Maths", "Creative Arts", "Drama", "Journalism", "English"];
 
-var NUM_SHOPS = 5;
-var NUM_PRODUCTS_PER_SHOP = 8;
-var NUM_TRANSACTIONS = 20;
-var MAX_PRODUCTS_PER_TRANSACTION = 5;
+// Campus names
+var campusNames = ["City Space", "St Peters", "Sir Tom Cowie"];
+
+var NUM_STUDENTS_PER_COURSE = 6
+
 
 // Remove all data
-db.shop.drop();
-print("Dropped shop collection.");
+db.course.drop();
+print("Dropped course collection.");
 
-db.product.drop();
-print("Dropped product collection.");
-
-db.transaction.drop();
-print("Dropped transaction collection.");
-
+db.student.drop();
+print("Dropped student collection.");
 
 print("\nAll existing data has been removed.\n");
+               
 
 
 
+//// Students ////
+var newStudents = [];
 
+for(var studentCount = 0; studentCount < studentNames.length; studentCount++) {
+    var newStudent = {};
+    newStudent.name = studentNames[studentCount];
+    newStudent.age =  getRandomNumber(18, 22);
+    newStudent.gender = getRandomValue(genders);
 
-//// Products ////
-var newProducts = [];
-
-for(var productCount = 0; productCount < productNames.length; productCount++) {
-    var newProduct = {};
-    newProduct.name = productNames[productCount];
-    newProduct.price = getRandomNumber(0.5, 50);
-
-    newProducts.push(newProduct);
+    newStudents.push(newStudent);
 };
 
-db.product.insert(newProducts);
+db.student.insert(newStudents);
 
-var products = db.product.find().toArray();
+var students = db.student.find().toArray();
 
-// Check all products have been inserted
-if(productNames.length == products.length) {
-    print(productNames.length + " products have been created.");
+// Check all students have been inserted
+if(studentNames.length == students.length) {
+    print(studentNames.length + " students have been created.");
 } else {
-    print("Not all products created!");
+    print("Not all students created!");
     outcome = false;
 }
 
 
 
 
-//// Shops ////
-var newShops = [ ];
+//// Courses ////
+var newCourses = [];
 
-for(var shopCount = 0; shopCount < NUM_SHOPS; shopCount++) {
-    var newShop = {};
+for(var courseCount = 0; courseCount < courseNames.length; courseCount++) {
+    var newCourse = {};
 
-    newShop.name = "shop" + shopCount;
-    newShop.location = getRandomValue(shopLocations);
-    newShop.numStaff = getRandomNumber(5, 35);
+    newCourse.name = courseNames[courseCount];
+    newCourse.campus = getRandomValue(campusNames);
 
-    newShop.products = [];
+    newCourse.students = [];
 
-    for(var shopProdCount = 0; shopProdCount < NUM_PRODUCTS_PER_SHOP; shopProdCount++) {
+    for(var courseStuCount = 0; courseStuCount < NUM_STUDENTS_PER_COURSE; courseStuCount++) {
 
-        var index = getRandomNumber(0, products.length);
+        var index = getRandomNumber(0, students.length);
 
-        var product = {};
-        product._id = products[index]._id;
-        product.name = products[index].name;
+        var student = {};
+        student.id = students[index]._id.str;
+        student.grade = getRandomNumber(30, 101);
 
-        newShop.products.push(product);
+        newCourse.students.push(student);
     }
 
-    newShops.push(newShop);
+    newCourses.push(newCourse);
 };
 
-db.shop.insert(newShops);
+db.course.insert(newCourses);
 
-var shops = db.shop.find().toArray();
+var courses = db.course.find().toArray();
 
-// Check all shops have been inserted
-if(NUM_SHOPS == shops.length) {
-    print(NUM_SHOPS + " shops have been created.");
+// Check all courses have been inserted
+if(courseNames.length == courses.length) {
+    print(courseNames.length + " courses have been created.");
 } else {
-    print("Not all shops created!");
+    print("Not all courses created!");
     outcome = false;
 }
 
-
-
-
-//// Transactions ////
-var newTransactions = [ ];
-
-// For each shop
-for(var transactionCounter = 0; transactionCounter < shops.length; transactionCounter++) {
-
-    var transactionShop = shops[transactionCounter];
-
-    for(var transactionCount = 0; transactionCount < NUM_TRANSACTIONS; transactionCount++) {
-        var newTransaction = {};
-
-        newTransaction.shopName = transactionShop.name;
-        newTransaction.shopId = transactionShop._id;
-        newTransaction.type = getRandomValue(transactionTypes);
-
-        newTransaction.products = [];
-
-        var numOfProducts = getRandomNumber(1, MAX_PRODUCTS_PER_TRANSACTION);
-
-        var total = 0;
-
-        for(var productCount = 0; productCount < numOfProducts; productCount++) {
-            
-            var product = getRandomValue(transactionShop.products);
-
-            var quantity = getRandomNumber(1, 20);
-            total =+ quantity;
-
-            newTransaction.products.push({name : product.name, id : product._id, quantity : quantity});
-
-        }
-
-        // Generate a random price
-        newTransaction.price = (total * getRandomNumber(10, 100));
-        
-        db.transaction.insert(newTransaction);
-
-    }
-
-}
-
-var transactions = db.transaction.find().toArray();
-
-// Check all transactions have been inserted
-print(NUM_TRANSACTIONS + " transactions have been created for each shop.");
 
 
 
@@ -165,7 +114,7 @@ function getRandomValue(passedArray) {
 
 // Random number generator
 function getRandomNumber(lower, upper) {
-    return Math.floor((Math.random() * upper) + lower); 
+    return Math.floor(Math.random() * (upper - lower)) + lower; 
 };
 
 
