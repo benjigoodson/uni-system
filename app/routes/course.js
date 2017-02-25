@@ -71,5 +71,4 @@ router.route('/full/:course_id')
 
     })
 
-
 module.exports = router;
