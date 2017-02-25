@@ -55,7 +55,7 @@ router.route('/full/:course_id')
     .get(function(req, res) {
 
         var id = req.params.course_id;
-        console.log("Requested: GET - /api/course/full" + id);
+        console.log("Requested: GET - /api/course/full/" + id);
 
         // Get course by the id passed
         controller.getFull(id, function(err, course) {
