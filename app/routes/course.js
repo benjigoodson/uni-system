@@ -9,6 +9,7 @@ var controller = require('../controllers/course');
 var router = express.Router();
 
 // Courses api routes
+
 // Get all courses
 router.route('/').get(function(req, res) {
     console.log("Requested: GET - /api/course");
@@ -16,11 +17,13 @@ router.route('/').get(function(req, res) {
     controller.getAll(function(err, courses) {
 
         if(err) {
-            console.log("Error: " + err);
+            // Return error to the calling function
+            console.log("Error: " + error);
             res.status(500).json({success:false, message: err});
             return;
         }
-
+        
+        // Send the list of courses
         res.send(courses);
 
     });
@@ -32,18 +35,21 @@ router.route('/:course_id')
     // Get a unique course
     .get(function(req, res) {
 
+        // Create the query for a passed id
         var id = req.params.course_id;
+
         console.log("Requested: GET - /api/course/" + id);
 
         // Get course by the id passed
         controller.get(id, function(err, course) {
             if(err) {
-                console.log("Error: " + err);
+                // Return error to the calling function
+                console.log("Error: " + error);
                 res.status(500).json({success:false, message: err});
                 return;
             }
 
-            // return the course
+            // Send the course
             res.json(course);
         });
 
@@ -54,18 +60,21 @@ router.route('/full/:course_id')
     // Get a unique course
     .get(function(req, res) {
 
+        // Create the query for a passed id
         var id = req.params.course_id;
+
         console.log("Requested: GET - /api/course/full/" + id);
 
         // Get course by the id passed
         controller.getFull(id, function(err, course) {
             if(err) {
-                console.log("Error: " + err);
+                // Return error to the calling function
+                console.log("Error: " + error);
                 res.status(500).json({success:false, message: err});
                 return;
             }
 
-            // return the course and full student details
+            // Return the course and full student details
             res.json(course);
         });
 

@@ -21,7 +21,6 @@ var campusNames = ["City Space", "St Peters", "Sir Tom Cowie"];
 
 var NUM_STUDENTS_PER_COURSE = 6
 
-
 // Remove all data
 db.course.drop();
 print("Dropped course collection.");
@@ -31,9 +30,6 @@ print("Dropped student collection.");
 
 print("\nAll existing data has been removed.\n");
                
-
-
-
 //// Students ////
 var newStudents = [];
 
@@ -57,9 +53,6 @@ if(studentNames.length == students.length) {
     print("Not all students created!");
     outcome = false;
 }
-
-
-
 
 //// Courses ////
 var newCourses = [];
@@ -98,9 +91,6 @@ if(courseNames.length == courses.length) {
     outcome = false;
 }
 
-
-
-
 //// Private functions ////
 
 // Get a random value
@@ -116,6 +106,5 @@ function getRandomValue(passedArray) {
 function getRandomNumber(lower, upper) {
     return Math.floor(Math.random() * (upper - lower)) + lower; 
 };
-
 
 print("\nHas it ran correctly? " + outcome);
