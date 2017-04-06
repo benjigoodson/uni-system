@@ -1,7 +1,7 @@
 {
   "name": "uni-system",
   "version": "1.0.0",
-  "description": "",
+  "description": "A test case system for the multiple dashbing application",
   "main": "server.js",
   "author": "Benjamin Goodson",
   "license": "ISC",
@@ -19,5 +19,9 @@
   },
   "scripts": {
     "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benjigoodson/uni-system.git"
   }
 }
